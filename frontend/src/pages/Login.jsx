@@ -76,33 +76,33 @@ const Login = () => {
                         </div>
 
                         <div className="space-y-3">
-                            <button onClick={() => handleLogin('user')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-dark-border hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all group">
-                                <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors mr-4">
-                                    <User className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400" />
+                            <button onClick={() => handleLogin('user')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-[#333] hover:border-primary-500 hover:bg-primary-600 dark:hover:bg-primary-600 transition-all group">
+                                <div className="bg-primary-50 dark:bg-primary-900/20 p-2 rounded-lg group-hover:bg-white/20 transition-colors mr-4">
+                                    <User className="w-5 h-5 text-primary-600 dark:text-primary-400 group-hover:text-white" />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className="font-semibold text-gray-900 dark:text-white text-sm">Employee (USER)</div>
-                                    <div className="text-xs text-gray-500">Can create and view own tickets</div>
+                                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-white text-sm transition-colors">Employee (USER)</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-white/80 transition-colors">Can create and view own tickets</div>
                                 </div>
                             </button>
 
-                            <button onClick={() => handleLogin('itadmin')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-dark-border hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group">
-                                <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors mr-4">
-                                    <Shield className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                            <button onClick={() => handleLogin('itadmin')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-[#333] hover:border-blue-500 hover:bg-blue-600 dark:hover:bg-blue-600 transition-all group">
+                                <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg group-hover:bg-white/20 transition-colors mr-4">
+                                    <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400 group-hover:text-white" />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className="font-semibold text-gray-900 dark:text-white text-sm">IT Admin (IT_ADMIN)</div>
-                                    <div className="text-xs text-gray-500">Manage IT tickets & update status</div>
+                                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-white text-sm transition-colors">IT Admin (IT_ADMIN)</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-white/80 transition-colors">Manage IT tickets & update status</div>
                                 </div>
                             </button>
 
-                            <button onClick={() => handleLogin('admin')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-dark-border hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all group">
-                                <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors mr-4">
-                                    <ShieldAlert className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400" />
+                            <button onClick={() => handleLogin('admin')} className="w-full flex items-center p-3 rounded-xl border border-gray-200 dark:border-[#333] hover:border-purple-500 hover:bg-purple-600 dark:hover:bg-purple-600 transition-all group">
+                                <div className="bg-purple-50 dark:bg-purple-900/20 p-2 rounded-lg group-hover:bg-white/20 transition-colors mr-4">
+                                    <ShieldAlert className="w-5 h-5 text-purple-600 dark:text-purple-400 group-hover:text-white" />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className="font-semibold text-gray-900 dark:text-white text-sm">Super Admin</div>
-                                    <div className="text-xs text-gray-500">Full system access & user management</div>
+                                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-white text-sm transition-colors">Super Admin</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-white/80 transition-colors">Full system access & user management</div>
                                 </div>
                             </button>
                         </div>

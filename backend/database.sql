@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     issue_type VARCHAR(50) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'Open',
+    status VARCHAR(20) NOT NULL DEFAULT 'Pending',
     priority VARCHAR(20) NOT NULL DEFAULT 'Medium',
     escalated BOOLEAN DEFAULT false,
     floor VARCHAR(20),

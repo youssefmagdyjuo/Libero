@@ -29,6 +29,27 @@ export const login = async (req, res) => {
     }
 };
 
+export const changePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const { rows } = await query('SELECT password FROM users WHERE id = ?', [userId]);
+        if (rows.length === 0) return res.status(404).json({ message: 'User not found' });
+
+        const user = rows[0];
+        if (user.password !== currentPassword) {
+            return res.status(400).json({ message: 'Incorrect current password' });
+        }
+
+        await query('UPDATE users SET password = ? WHERE id = ?', [newPassword, userId]);
+        res.json({ message: 'Password updated successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 export const me = (req, res) => {
     res.json({ user: req.user });
 };
