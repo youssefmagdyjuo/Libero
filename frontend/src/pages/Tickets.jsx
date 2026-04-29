@@ -97,18 +97,18 @@ const Tickets = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('tickets')}</h1>
-                    <p className="text-gray-500 text-sm">Manage and track all support requests.</p>
+                    <p className="text-gray-500 text-sm">{t('tickets_subtitle')}</p>
                 </div>
                 
                 <div className="flex gap-3 w-full sm:w-auto">
                     <div className="relative flex-1 sm:w-64">
-                        <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <Search className="w-4 h-4 absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input 
                             type="text" 
                             placeholder={t('search_tickets')}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-9 pr-4 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
+                            className="w-full ps-9 pe-4 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
                         />
                     </div>
                     
@@ -129,7 +129,7 @@ const Tickets = () => {
 
                     {!isAdmin && (
                         <Link to="/tickets/new" className="px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium transition-colors shadow-sm">
-                            Create
+                            {t('create_ticket')}
                         </Link>
                     )}
                 </div>

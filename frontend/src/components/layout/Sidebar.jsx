@@ -48,8 +48,8 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }) => {
             {/* Logo Section */}
             <div className={`h-16 flex items-center ${isCollapsed ? 'justify-center' : 'px-6'} border-b border-gray-200 dark:border-[#333]`}>
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0">
-                        L
+                    <div className="w-8 h-8  rounded-lg flex items-center justify-center text-white font-bold shrink-0">
+                        <img src="/libero.png" alt="" />
                     </div>
                     {!isCollapsed && <span className="text-xl font-bold text-gray-900 dark:text-white">Libero</span>}
                 </div>

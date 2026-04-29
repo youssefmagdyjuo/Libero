@@ -9,12 +9,14 @@ import {
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../components/common/ConfirmModal';
 
 const TicketDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { t } = useTranslation();
     const [ticket, setTicket] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -66,9 +68,9 @@ const TicketDetails = () => {
     if (error || !ticket) return (
         <div className="max-w-2xl mx-auto mt-12 text-center">
             <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-900/30">
-                <p className="text-red-600 dark:text-red-400 font-medium">{error || 'Ticket not found'}</p>
+                <p className="text-red-600 dark:text-red-400 font-medium">{error || t('ticket_not_found')}</p>
                 <button onClick={() => navigate('/tickets')} className="mt-4 text-sm font-semibold text-primary-600 hover:underline">
-                    Back to Tickets
+                    {t('back_to_tickets_btn')}
                 </button>
             </div>
         </div>
@@ -83,7 +85,7 @@ const TicketDetails = () => {
                     className="flex items-center text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to List
+                    {t('back_to_tickets')}
                 </button>
 
                 <div className="flex gap-3 w-full md:w-auto">
@@ -93,7 +95,7 @@ const TicketDetails = () => {
                             className="flex-1 md:flex-none flex items-center justify-center px-4 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-[#252525] transition-all font-medium"
                         >
                             <Edit3 className="w-4 h-4 mr-2" />
-                            Edit Issue
+                            {t('edit_issue')}
                         </Link>
                     )}
                     {((ticket.user_id === user?.id && ticket.status === 'Pending') || isAdmin) && (
@@ -102,7 +104,7 @@ const TicketDetails = () => {
                             className="flex-1 md:flex-none flex items-center justify-center px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all font-medium"
                         >
                             <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
+                            {t('delete_ticket')}
                         </button>
                     )}
                 </div>
@@ -136,25 +138,25 @@ const TicketDetails = () => {
                             <div className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                                 <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">Location</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">{t('location')}</p>
                                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Floor {ticket.floor || '-'}, {ticket.department || 'No Dept'}
+                                        {t('floor_label')} {ticket.floor || '-'}, {ticket.department || t('no_dept')}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Phone className="w-5 h-5 text-gray-400 mt-0.5" />
                                 <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">Contact</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">{t('contact')}</p>
                                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {ticket.phone || 'No phone provided'}
+                                        {ticket.phone || t('no_phone')}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Tag className="w-5 h-5 text-gray-400 mt-0.5" />
                                 <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">Type</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold mb-1">{t('type')}</p>
                                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         {ticket.issue_type}
                                     </p>
@@ -167,7 +169,7 @@ const TicketDetails = () => {
                             <div className="p-6 md:p-8 border-t border-gray-100 dark:border-[#333]">
                                 <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 flex items-center">
                                     <FileText className="w-4 h-4 mr-2 text-primary-500" />
-                                    Attachments
+                                    {t('attachments_label')}
                                 </h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {ticket.attachments.map((file) => (
@@ -180,7 +182,7 @@ const TicketDetails = () => {
                                                         className="w-full h-48 object-cover rounded-lg cursor-zoom-in hover:opacity-90 transition-opacity"
                                                         onClick={() => window.open(`http://localhost:5000/${file.file_path.replace(/\\/g, '/')}`, '_blank')}
                                                     />
-                                                    <p className="text-xs text-gray-500 text-center font-medium">Image Attachment</p>
+                                                    <p className="text-xs text-gray-500 text-center font-medium">{t('image_attachment')}</p>
                                                 </div>
                                             ) : (
                                                 <div className="space-y-3">
@@ -191,7 +193,7 @@ const TicketDetails = () => {
                                                         <source src={`http://localhost:5000/${file.file_path.replace(/\\/g, '/')}`} type="audio/wav" />
                                                         Your browser does not support the audio element.
                                                     </audio>
-                                                    <p className="text-xs text-gray-500 text-center font-medium">Voice Recording</p>
+                                                    <p className="text-xs text-gray-500 text-center font-medium">{t('voice_recording')}</p>
                                                 </div>
                                             )}
                                         </div>
@@ -206,14 +208,14 @@ const TicketDetails = () => {
                 <div className="space-y-6">
                     <div className="bg-white dark:bg-[#1e1e1e] rounded-2xl border border-gray-100 dark:border-[#333] p-6 shadow-sm">
                         <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">
-                            Ticket Details
+                            {t('ticket_details_title')}
                         </h3>
                         
                         <div className="space-y-6">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center text-gray-500 text-sm">
                                     <AlertTriangle className="w-4 h-4 mr-2" />
-                                    Priority
+                                    {t('priority_label')}
                                 </div>
                                 <span className={`text-sm font-bold ${
                                     ticket.priority === 'High' ? 'text-red-600' : 
@@ -226,7 +228,7 @@ const TicketDetails = () => {
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center text-gray-500 text-sm">
                                     <Calendar className="w-4 h-4 mr-2" />
-                                    Created
+                                    {t('created_label')}
                                 </div>
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     {new Date(ticket.created_at).toLocaleDateString()}
@@ -235,9 +237,9 @@ const TicketDetails = () => {
 
                             {isAdmin && (
                                 <div className="pt-4 border-t border-gray-100 dark:border-[#333]">
-                                    <p className="text-xs text-gray-500 uppercase font-bold mb-3">System Checks</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold mb-3">{t('system_checks')}</p>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-xs text-gray-600 dark:text-gray-400">Locked for User?</span>
+                                        <span className="text-xs text-gray-600 dark:text-gray-400">{t('locked_for_user')}</span>
                                         <span className={`text-xs font-bold ${(ticket.is_locked || ticket.status !== 'Pending') ? 'text-red-600' : 'text-green-600'}`}>
                                             {(ticket.is_locked || ticket.status !== 'Pending') ? 'YES' : 'NO'}
                                         </span>
@@ -252,9 +254,9 @@ const TicketDetails = () => {
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDelete}
-                title="Delete Ticket"
-                message="Are you sure you want to delete this ticket? This action cannot be undone."
-                confirmText="Delete Ticket"
+                title={t('delete_confirm_title')}
+                message={t('delete_confirm_msg')}
+                confirmText={t('delete_ticket')}
             />
         </div>
     );

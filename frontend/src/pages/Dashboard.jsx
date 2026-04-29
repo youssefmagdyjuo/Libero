@@ -44,11 +44,11 @@ const Dashboard = () => {
                 <div className="bg-white dark:bg-[#1e1e1e] rounded-3xl p-8 md:p-12 border border-gray-100 dark:border-[#333] shadow-sm mb-10 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full -mr-32 -mt-32 transition-transform group-hover:scale-110 duration-700"></div>
                     <div className="relative z-10">
-                        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-3">Welcome back, {user?.username}! 👋</h1>
-                        <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-lg">Your IT support portal is ready. Check your ticket status or report a new issue below.</p>
+                        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-3">{t('welcome_back')}, {user?.username}! 👋</h1>
+                        <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-lg">{t('user_hub_desc')}</p>
                         <Link to="/tickets/new" className="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl font-bold shadow-xl shadow-primary-500/20 transition-all hover:-translate-y-0.5">
                             <Plus className="w-5 h-5 mr-2" />
-                            Create New Ticket
+                            {t('create_new_issue_btn')}
                         </Link>
                     </div>
                 </div>
@@ -56,27 +56,27 @@ const Dashboard = () => {
                 {/* User Stats Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Total</p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('total_stats')}</p>
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.total}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
-                        <p className="text-xs font-bold text-orange-500 uppercase tracking-wider mb-1">Pending</p>
+                        <p className="text-xs font-bold text-orange-500 uppercase tracking-wider mb-1">{t('pending')}</p>
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.pending}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
-                        <p className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">Active</p>
+                        <p className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">{t('active_stats')}</p>
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.inProgress}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
-                        <p className="text-xs font-bold text-green-500 uppercase tracking-wider mb-1">Solved</p>
+                        <p className="text-xs font-bold text-green-500 uppercase tracking-wider mb-1">{t('solved')}</p>
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.solved}</h3>
                     </div>
                 </div>
 
                 {/* Recent Tickets */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-black text-gray-900 dark:text-white">Recent Activity</h2>
-                    <Link to="/tickets" className="text-sm font-bold text-primary-600 hover:underline">View All Tickets</Link>
+                    <h2 className="text-2xl font-black text-gray-900 dark:text-white">{t('recent_activity')}</h2>
+                    <Link to="/tickets" className="text-sm font-bold text-primary-600 hover:underline">{t('view_all_issues')}</Link>
                 </div>
 
                 <div className="space-y-4">
@@ -119,8 +119,8 @@ const Dashboard = () => {
                             <div className="w-20 h-20 bg-gray-50 dark:bg-[#252525] rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Ticket className="w-10 h-10 text-gray-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No tickets yet</h3>
-                            <p className="text-gray-500 mb-6">You haven't reported any issues. Click the button above to get started.</p>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('no_issues_yet')}</h3>
+                            <p className="text-gray-500 mb-6">{t('no_issues_desc')}</p>
                         </div>
                     )}
                 </div>
@@ -131,8 +131,8 @@ const Dashboard = () => {
     return (
         <div className="py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-black text-gray-900 dark:text-white">Admin Hub</h1>
-                <p className="text-gray-500 dark:text-gray-400">Total control over system issues and resolutions.</p>
+                <h1 className="text-3xl font-black text-gray-900 dark:text-white">{t('admin_hub')}</h1>
+                <p className="text-gray-500 dark:text-gray-400">{t('admin_hub_desc')}</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -141,7 +141,7 @@ const Dashboard = () => {
                         <Ticket className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Total</p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('total_stats')}</p>
                         <h3 className="text-2xl font-black">{stats.total}</h3>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ const Dashboard = () => {
                         <Clock className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Pending</p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('pending')}</p>
                         <h3 className="text-2xl font-black">{stats.pending}</h3>
                     </div>
                 </div>
@@ -161,7 +161,7 @@ const Dashboard = () => {
                         <AlertCircle className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Active</p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('active_stats')}</p>
                         <h3 className="text-2xl font-black">{stats.inProgress}</h3>
                     </div>
                 </div>
@@ -171,7 +171,7 @@ const Dashboard = () => {
                         <CheckCircle className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Solved</p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('solved')}</p>
                         <h3 className="text-2xl font-black">{stats.solved}</h3>
                     </div>
                 </div>
@@ -180,19 +180,19 @@ const Dashboard = () => {
             {/* Admin Recent Activity */}
             <div className="bg-white dark:bg-[#1e1e1e] p-8 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
                 <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-xl font-black">Latest System Activity</h3>
-                    <Link to="/tickets" className="text-xs font-bold uppercase text-primary-600 hover:underline">Full Audit Log</Link>
+                    <h3 className="text-xl font-black">{t('latest_activity')}</h3>
+                    <Link to="/tickets" className="text-xs font-bold uppercase text-primary-600 hover:underline">{t('full_audit_log')}</Link>
                 </div>
                 <div className="space-y-6">
-                    {tickets.map(t => (
-                        <div key={t.id} className="flex items-center text-sm border-l-2 border-gray-100 dark:border-[#333] pl-6 relative">
+                    {tickets.map(ticket => (
+                        <div key={ticket.id} className="flex items-center text-sm border-l-2 border-gray-100 dark:border-[#333] pl-6 relative">
                             <div className={`absolute left-[-5px] w-2 h-2 rounded-full ${
-                                t.status === 'Solved' ? 'bg-green-500' :
-                                t.status === 'In Progress' ? 'bg-blue-500' : 'bg-orange-500'
+                                ticket.status === 'Solved' ? 'bg-green-500' :
+                                ticket.status === 'In Progress' ? 'bg-blue-500' : 'bg-orange-500'
                             }`}></div>
-                            <span className="font-bold text-primary-600 mr-3">{t.ticket_key}</span>
-                            <span className="text-gray-500">New ticket submitted by employee</span>
-                            <span className="ml-auto font-medium text-gray-400">{new Date(t.created_at).toLocaleTimeString()}</span>
+                            <span className="font-bold text-primary-600 mr-3">{ticket.ticket_key}</span>
+                            <span className="text-gray-500">{t('new_issue_submitted')}</span>
+                            <span className="ml-auto font-medium text-gray-400">{new Date(ticket.created_at).toLocaleTimeString()}</span>
                         </div>
                     ))}
                 </div>
