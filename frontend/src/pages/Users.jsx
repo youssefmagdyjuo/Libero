@@ -62,8 +62,8 @@ const Users = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+                if (formData.password !== formData.confirmPassword) {
+            setError(t('passwords_no_match'));
             return;
         }
 
@@ -72,16 +72,16 @@ const Users = () => {
         try {
             if (editingUser) {
                 await axios.put(`http://localhost:5000/api/users/${editingUser.id}`, formData);
-                toast.success('User updated successfully');
+                toast.success(t('user_updated'));
             } else {
                 await axios.post('http://localhost:5000/api/users', formData);
-                toast.success('User created successfully');
+                toast.success(t('user_created'));
             }
             setShowModal(false);
             fetchUsers();
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to save user');
-            toast.error(err.response?.data?.message || 'Failed to save user');
+            setError(err.response?.data?.message || t('failed_save_user'));
+            toast.error(err.response?.data?.message || t('failed_save_user'));
         } finally {
             setIsSubmitting(false);
         }
@@ -90,21 +90,21 @@ const Users = () => {
     const handleDeleteUser = async (id) => {
         try {
             await axios.delete(`http://localhost:5000/api/users/${id}`);
-            toast.success('User deleted successfully');
+            toast.success(t('user_deleted'));
             setDeleteModal({ isOpen: false, id: null });
             fetchUsers();
         } catch (err) {
-            toast.error(err.response?.data?.message || 'Failed to delete user');
+            toast.error(err.response?.data?.message || t('failed_delete_user'));
         }
     };
 
     const handleToggleStatus = async (id, currentStatus) => {
         try {
             await axios.patch(`http://localhost:5000/api/users/${id}/status`, { is_active: !currentStatus });
-            toast.success('Status updated successfully');
+            toast.success(t('status_updated'));
             fetchUsers();
         } catch (err) {
-            toast.error('Failed to update status');
+            toast.error(t('failed_update_status'));
         }
     };
 
@@ -134,7 +134,7 @@ const Users = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
-                    <p className="text-gray-500 text-sm">Create, edit, and manage system access.</p>
+                    <p className="text-gray-500 text-sm">{t('users_subtitle')}</p>
                 </div>
                 
                 <div className="flex gap-3 w-full sm:w-auto">
@@ -142,7 +142,7 @@ const Users = () => {
                         <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input 
                             type="text" 
-                            placeholder="Search users..." 
+                            placeholder={t('search_users')}
                             className="w-full pl-9 pr-4 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50"
                         />
                     </div>
@@ -151,7 +151,7 @@ const Users = () => {
                         className="px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center"
                     >
                         <Plus className="w-4 h-4 mr-2" />
-                        Add User
+                        {t('add_user')}
                     </button>
                 </div>
             </div>
@@ -161,10 +161,10 @@ const Users = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="border-b border-gray-200 dark:border-[#333] bg-gray-50/50 dark:bg-[#252525]">
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('user')}</th>
+                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('role')}</th>
+                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('status')}</th>
+                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-[#333]">
@@ -172,7 +172,7 @@ const Users = () => {
                                 <tr>
                                     <td colSpan="4" className="px-6 py-10 text-center">
                                         <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary-500 mb-2" />
-                                        <span className="text-gray-500">Loading users...</span>
+                                        <span className="text-gray-500">{t('loading_users')}</span>
                                     </td>
                                 </tr>
                             ) : users.map((u) => (
@@ -200,7 +200,7 @@ const Users = () => {
                                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${u.is_active ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}
                                         >
                                             <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${u.is_active ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                                            {u.is_active ? 'Active' : 'Disabled'}
+                                            {u.is_active ? t('active') : t('disabled')}
                                         </button>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -234,7 +234,7 @@ const Users = () => {
                     <div className="bg-white dark:bg-[#1e1e1e] rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
                         <div className="p-6 border-b border-gray-100 dark:border-[#333] flex justify-between items-center">
                             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                                {editingUser ? 'Edit User' : 'Add New User'}
+                                {editingUser ? t('edit_user') : t('add_new_user')}
                             </h2>
                             <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full transition-colors">
                                 <X className="w-5 h-5" />
@@ -249,20 +249,20 @@ const Users = () => {
                             )}
                             
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('username')}</label>
                                 <input 
                                     type="text" 
                                     required
                                     value={formData.username}
                                     onChange={(e) => setFormData({...formData, username: e.target.value})}
                                     className="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] rounded-xl focus:ring-2 focus:ring-primary-500/50 outline-none transition-all dark:text-white"
-                                    placeholder="Enter username"
+                                    placeholder={t('enter_username')}
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Password {editingUser && '(Leave blank to keep current)'}
+                                    {t('password')} {editingUser && `(${t('leave_blank_keep')})`}
                                 </label>
                                 <input 
                                     type="password" 
@@ -270,32 +270,32 @@ const Users = () => {
                                     value={formData.password}
                                     onChange={(e) => setFormData({...formData, password: e.target.value})}
                                     className="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] rounded-xl focus:ring-2 focus:ring-primary-500/50 outline-none transition-all dark:text-white"
-                                    placeholder={editingUser ? '••••••••' : 'Enter password'}
+                                    placeholder={editingUser ? '••••••••' : t('enter_password')}
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('confirm_password')}</label>
                                 <input 
                                     type="password" 
                                     required={!editingUser || formData.password.length > 0}
                                     value={formData.confirmPassword}
                                     onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                                     className="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] rounded-xl focus:ring-2 focus:ring-primary-500/50 outline-none transition-all dark:text-white"
-                                    placeholder={editingUser ? '••••••••' : 'Confirm password'}
+                                    placeholder={editingUser ? '••••••••' : t('confirm_password')}
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('role')}</label>
                                 <select 
                                     value={formData.role}
                                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                                     className="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-[#333] rounded-xl focus:ring-2 focus:ring-primary-500/50 outline-none transition-all dark:text-white"
                                 >
-                                    <option value="USER">Standard User</option>
-                                    <option value="IT_ADMIN">IT Admin</option>
-                                    <option value="SUPER_ADMIN">Super Admin</option>
+                                    <option value="USER">{t('standard_user')}</option>
+                                    <option value="IT_ADMIN">{t('it_admin')}</option>
+                                    <option value="SUPER_ADMIN">{t('super_admin')}</option>
                                 </select>
                             </div>
 
@@ -305,14 +305,18 @@ const Users = () => {
                                     onClick={() => setShowModal(false)}
                                     className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-[#333] text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors"
                                 >
-                                    Cancel
+                                    {t('cancel')}
                                 </button>
                                 <button 
                                     type="submit"
                                     disabled={isSubmitting}
                                     className="flex-1 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-medium transition-all shadow-lg shadow-primary-500/20 flex items-center justify-center disabled:opacity-50"
                                 >
-                                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingUser ? 'Save Changes' : 'Create User')}
+                                    {isSubmitting ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        editingUser ? t('save_changes') : t('create_user')
+                                    )}
                                 </button>
                             </div>
                         </form>
@@ -324,9 +328,9 @@ const Users = () => {
                 isOpen={deleteModal.isOpen}
                 onClose={() => setDeleteModal({ isOpen: false, id: null })}
                 onConfirm={() => handleDeleteUser(deleteModal.id)}
-                title="Delete User"
-                message="Are you sure you want to delete this user? All their data will be permanently removed."
-                confirmText="Delete User"
+                title={t('delete_user')}
+                message={t('delete_user_confirm_msg')}
+                confirmText={t('delete_user')}
             />
         </div>
     );

@@ -1,13 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Upload, Mic, MicOff, Send, X, Loader2, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const CreateTicket = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { user } = useAuth();
+    const isAdmin = useMemo(
+        () => user?.role === 'SUPER_ADMIN' || user?.role === 'IT_ADMIN',
+        [user]
+    );
     const [isRecording, setIsRecording] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -24,7 +30,7 @@ const CreateTicket = () => {
         floor: '',
         department: '',
         description: '',
-        priority: 'Medium'
+        ...(isAdmin ? { priority: 'Medium' } : {})
     });
 
     const handleImageChange = (e) => {
@@ -73,7 +79,8 @@ const CreateTicket = () => {
         setError('');
 
         const data = new FormData();
-        Object.keys(formData).forEach(key => data.append(key, formData[key]));
+        Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+        if (!isAdmin) data.set('priority', 'Medium');
         if (selectedImage) data.append('image', selectedImage);
         if (recordedAudio) data.append('voice', recordedAudio);
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { Filter, Search, Eye, Loader2, Trash2 } from 'lucide-react';
+import { Filter, Search, Eye, Loader2, Trash2, FileSpreadsheet } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -15,6 +15,11 @@ const Tickets = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
+    const [priorityFilter, setPriorityFilter] = useState('All');
+    const [typeFilter, setTypeFilter] = useState('All');
+    const [departmentFilter, setDepartmentFilter] = useState('All');
+    const [dateFrom, setDateFrom] = useState('');
+    const [exporting, setExporting] = useState(false);
     const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
     const isAdmin = user?.role === 'SUPER_ADMIN' || user?.role === 'IT_ADMIN';
 
@@ -24,7 +29,7 @@ const Tickets = () => {
 
     useEffect(() => {
         applyFilters();
-    }, [searchTerm, statusFilter, tickets]);
+    }, [searchTerm, statusFilter, priorityFilter, typeFilter, departmentFilter, dateFrom, tickets]);
 
     const fetchTickets = async () => {
         try {
@@ -45,6 +50,23 @@ const Tickets = () => {
             result = result.filter(t => t.status === statusFilter);
         }
 
+        if (priorityFilter !== 'All') {
+            result = result.filter(t => t.priority === priorityFilter);
+        }
+
+        if (typeFilter !== 'All') {
+            result = result.filter(t => t.issue_type === typeFilter);
+        }
+
+        if (departmentFilter !== 'All') {
+            result = result.filter(t => t.department === departmentFilter);
+        }
+
+        if (dateFrom) {
+            const from = new Date(dateFrom);
+            result = result.filter(t => new Date(t.created_at) >= from);
+        }
+
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
             result = result.filter(t => 
@@ -55,6 +77,45 @@ const Tickets = () => {
         }
 
         setFilteredTickets(result);
+    };
+
+    const buildExportParams = () => {
+        const params = {};
+
+        if (statusFilter !== 'All') params.status = statusFilter;
+        if (priorityFilter !== 'All') params.priority = priorityFilter;
+        if (typeFilter !== 'All') params.issue_type = typeFilter;
+        if (departmentFilter !== 'All') params.department = departmentFilter;
+        if (dateFrom) params.dateFrom = dateFrom;
+        if (searchTerm) params.q = searchTerm;
+
+        return params;
+    };
+
+    const handleExport = async () => {
+        try {
+            setExporting(true);
+            const res = await axios.get('http://localhost:5000/api/tickets/export', {
+                params: buildExportParams(),
+                responseType: 'blob'
+            });
+
+            const blob = new Blob([res.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tickets.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Failed to export tickets');
+        } finally {
+            setExporting(false);
+        }
     };
 
     const getStatusBadge = (status) => {
@@ -100,8 +161,8 @@ const Tickets = () => {
                     <p className="text-gray-500 text-sm">{t('tickets_subtitle')}</p>
                 </div>
                 
-                <div className="flex gap-3 w-full sm:w-auto">
-                    <div className="relative flex-1 sm:w-64">
+                <div className="flex flex-wrap items-stretch gap-3 w-full sm:w-auto">
+                    <div className="relative w-full sm:w-64">
                         <Search className="w-4 h-4 absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input 
                             type="text" 
@@ -112,11 +173,11 @@ const Tickets = () => {
                         />
                     </div>
                     
-                    <div className="relative">
+                    <div className="relative w-full sm:w-auto">
                         <select 
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="pl-3 pr-8 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 appearance-none cursor-pointer"
+                            className="w-full sm:w-auto min-w-40 pl-3 pr-8 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 appearance-none cursor-pointer"
                         >
                             <option value="All">{t('all_status')}</option>
                             <option value="Pending">{t('pending')}</option>
@@ -126,6 +187,69 @@ const Tickets = () => {
                         </select>
                         <Filter className="w-3 h-3 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                     </div>
+
+                    {isAdmin && (
+                        <>
+                            <div className="relative w-full sm:w-auto">
+                                <select
+                                    value={priorityFilter}
+                                    onChange={(e) => setPriorityFilter(e.target.value)}
+                                    className="w-full sm:w-auto min-w-40 pl-3 pr-8 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 appearance-none cursor-pointer"
+                                >
+                                    <option value="All">All Priorities</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                                <Filter className="w-3 h-3 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                            </div>
+
+                            <div className="relative w-full sm:w-auto">
+                                <select
+                                    value={typeFilter}
+                                    onChange={(e) => setTypeFilter(e.target.value)}
+                                    className="w-full sm:w-auto min-w-40 pl-3 pr-8 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 appearance-none cursor-pointer"
+                                >
+                                    <option value="All">All Types</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Hospital">Hospital</option>
+                                </select>
+                                <Filter className="w-3 h-3 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                            </div>
+
+                            <div className="relative w-full sm:w-auto">
+                                <select
+                                    value={departmentFilter}
+                                    onChange={(e) => setDepartmentFilter(e.target.value)}
+                                    className="w-full sm:w-auto min-w-44 pl-3 pr-8 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 appearance-none cursor-pointer"
+                                >
+                                    <option value="All">All Departments</option>
+                                    {[...new Set(tickets.map((x) => x.department).filter(Boolean))].map((dept) => (
+                                        <option key={dept} value={dept}>{dept}</option>
+                                    ))}
+                                </select>
+                                <Filter className="w-3 h-3 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                            </div>
+
+                            <input
+                                type="date"
+                                value={dateFrom}
+                                onChange={(e) => setDateFrom(e.target.value)}
+                                className="w-full sm:w-40 px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-[#333] rounded-lg text-sm text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+                                aria-label="Created date from"
+                            />
+
+                            <button
+                                onClick={handleExport}
+                                disabled={exporting}
+                                className="w-full sm:w-auto justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2 whitespace-nowrap"
+                                title="Export filtered tickets to Excel"
+                            >
+                                <FileSpreadsheet className="w-4 h-4" />
+                                {exporting ? 'Exporting...' : 'Export to Excel'}
+                            </button>
+                        </>
+                    )}
 
                     {!isAdmin && (
                         <Link to="/tickets/new" className="px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium transition-colors shadow-sm">

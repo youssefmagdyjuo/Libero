@@ -65,6 +65,7 @@ import Users from './pages/Users';
 import ChangePassword from './pages/ChangePassword';
 import EditTicket from './pages/EditTicket';
 import TicketDetails from './pages/TicketDetails';
+import Profile from './pages/Profile';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -87,6 +88,7 @@ function App() {
                 <Route path="/tickets/edit/:id" element={<PrivateRoute><EditTicket /></PrivateRoute>} />
                 <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
                 <Route path="/change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             </Routes>
         </Router>
     );

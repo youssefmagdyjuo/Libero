@@ -2,8 +2,29 @@ import { query } from '../config/db.js';
 
 export const getUsers = async (req, res) => {
     try {
-        const { rows } = await query('SELECT id, username, role, is_active, created_at FROM users ORDER BY id DESC');
+        const { rows } = await query(
+            'SELECT id, username, avatar_key, role, is_active, created_at FROM users ORDER BY id DESC'
+        );
         res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+export const updateMyAvatar = async (req, res) => {
+    const userId = req.user.id;
+    const { avatar_key } = req.body || {};
+    const key = avatar_key == null ? null : String(avatar_key);
+
+    // Restrict to a simple safe key format
+    if (key !== null && !/^[a-zA-Z0-9_-]{1,64}$/.test(key)) {
+        return res.status(400).json({ message: 'Invalid avatar key' });
+    }
+
+    try {
+        await query('UPDATE users SET avatar_key = ? WHERE id = ?', [key, userId]);
+        res.json({ message: 'Avatar updated', avatar_key: key });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });

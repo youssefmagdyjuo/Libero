@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
+import toast from 'react-hot-toast';
 import { useTheme } from '../../context/ThemeContext';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { Sun, Moon, LogOut, Globe, KeyRound, Menu, X } from 'lucide-react';
+import { Sun, Moon, LogOut, Globe, KeyRound, Menu, X, UserCircle2 } from 'lucide-react';
 
 const Navbar = ({ onMenuToggle, isMobileMenuOpen }) => {
     const { theme, toggleTheme } = useTheme();
@@ -10,12 +13,53 @@ const Navbar = ({ onMenuToggle, isMobileMenuOpen }) => {
     const { t, i18n } = useTranslation();
     const location = useLocation();
 
+    useEffect(() => {
+        if (!user) return;
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const socket = io('http://localhost:5000', { auth: { token } });
+        socket.on('notification:new', (n) => {
+            const line = [n.title, n.body].filter(Boolean).join(' — ');
+            toast(line, { duration: 4500 });
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [user]);
+
     const toggleLanguage = () => {
         const newLang = i18n.language === 'en' ? 'ar' : 'en';
         i18n.changeLanguage(newLang);
     };
 
     const isAdmin = user?.role === 'SUPER_ADMIN' || user?.role === 'IT_ADMIN';
+
+    const avatarBgByKey = (k) => {
+        switch (k) {
+            case 'owl_green':
+                return 'bg-emerald-500';
+            case 'owl_blue':
+                return 'bg-blue-500';
+            case 'owl_purple':
+                return 'bg-purple-500';
+            case 'fox_orange':
+                return 'bg-orange-500';
+            case 'cat_pink':
+                return 'bg-pink-500';
+            case 'robot_slate':
+                return 'bg-slate-600';
+            default:
+                return 'bg-primary-600';
+        }
+    };
+
+    const initials = (name) => {
+        const u = String(name || '').trim();
+        if (!u) return 'U';
+        return u.slice(0, 2).toUpperCase();
+    };
 
     // Get current page name for display
     const getPageName = () => {
@@ -77,6 +121,19 @@ const Navbar = ({ onMenuToggle, isMobileMenuOpen }) => {
                 </button>
 
                 <div className="flex items-center border-l border-gray-200 dark:border-[#333] pl-2 md:pl-4 ml-1 md:ml-2">
+                    <Link
+                        to="/profile"
+                        title={t('profile')}
+                        className="mr-2 md:mr-3 inline-flex items-center justify-center"
+                    >
+                        <div
+                            className={`h-9 w-9 rounded-full text-white font-black text-xs flex items-center justify-center shadow-sm ${avatarBgByKey(
+                                user?.avatar_key
+                            )}`}
+                        >
+                            {user?.username ? initials(user.username) : <UserCircle2 className="w-5 h-5" />}
+                        </div>
+                    </Link>
                     <Link to="/change-password" title="Change Password" className="hidden sm:block mr-2 md:mr-4 p-1.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-lg transition-all">
                         <KeyRound className="w-5 h-5" />
                     </Link>

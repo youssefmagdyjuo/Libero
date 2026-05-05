@@ -31,6 +31,17 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateAvatar = async (avatarKey) => {
+        const res = await axios.put('http://localhost:5000/api/users/me/avatar', {
+            avatar_key: avatarKey
+        });
+
+        const next = { ...(user || {}), avatar_key: res.data.avatar_key };
+        setUser(next);
+        localStorage.setItem('user', JSON.stringify(next));
+        return next;
+    };
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem('token');
@@ -39,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading, updateAvatar }}>
             {children}
         </AuthContext.Provider>
     );
