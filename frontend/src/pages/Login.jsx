@@ -58,7 +58,7 @@ const Login = () => {
                     </div>
 
                     <div className="bg-white dark:bg-[#1e1e1e] rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-dark-border">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('welcome_back')}</h2>
+                        <h2 className="text-2xl font-bold text-gray-700 dark:text-white mb-2">{t('welcome_back')}</h2>
                         <p className="text-gray-500 dark:text-gray-400 mb-8 text-sm">{t('welcome_back_sub')}</p>
 
                         <form onSubmit={handleSubmit} className="space-y-5 mb-8">

@@ -44,7 +44,7 @@ const Dashboard = () => {
                 <div className="bg-white dark:bg-[#1e1e1e] rounded-3xl p-8 md:p-12 border border-gray-100 dark:border-[#333] shadow-sm mb-10 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full -mr-32 -mt-32 transition-transform group-hover:scale-110 duration-700"></div>
                     <div className="relative z-10">
-                        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-3">{t('welcome_back')}, {user?.username}! 👋</h1>
+                        <h1 className="text-4xl font-extrabold text-gray-700 dark:text-white mb-3">{t('welcome_back')}, {user?.username}! 👋</h1>
                         <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-lg">{t('user_hub_desc')}</p>
                         <Link to="/tickets/new" className="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl font-bold shadow-xl shadow-primary-500/20 transition-all hover:-translate-y-0.5">
                             <Plus className="w-5 h-5 mr-2" />
@@ -57,25 +57,25 @@ const Dashboard = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
                         <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('total_stats')}</p>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.total}</h3>
+                        <h3 className="text-2xl font-black text-gray-700 dark:text-white">{stats.total}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
                         <p className="text-xs font-bold text-orange-500 uppercase tracking-wider mb-1">{t('pending')}</p>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.pending}</h3>
+                        <h3 className="text-2xl font-black text-gray-700 dark:text-white">{stats.pending}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
                         <p className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">{t('active_stats')}</p>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.inProgress}</h3>
+                        <h3 className="text-2xl font-black text-gray-700 dark:text-white">{stats.inProgress}</h3>
                     </div>
                     <div className="bg-white dark:bg-[#1e1e1e] p-5 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm">
                         <p className="text-xs font-bold text-green-500 uppercase tracking-wider mb-1">{t('solved')}</p>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white">{stats.solved}</h3>
+                        <h3 className="text-2xl font-black text-gray-700 dark:text-white">{stats.solved}</h3>
                     </div>
                 </div>
 
                 {/* Recent Tickets */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-black text-gray-900 dark:text-white">{t('recent_activity')}</h2>
+                    <h2 className="text-2xl font-black text-gray-700 dark:text-white">{t('recent_activity')}</h2>
                     <Link to="/tickets" className="text-sm font-bold text-primary-600 hover:underline">{t('view_all_issues')}</Link>
                 </div>
 
@@ -109,7 +109,7 @@ const Dashboard = () => {
                                             {ticket.status}
                                         </span>
                                     </div>
-                                    <h4 className="font-bold text-gray-900 dark:text-white truncate">{ticket.title}</h4>
+                                    <h4 className="font-bold text-gray-700 dark:text-white truncate">{ticket.title}</h4>
                                 </div>
                                 <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
                             </Link>
@@ -119,7 +119,7 @@ const Dashboard = () => {
                             <div className="w-20 h-20 bg-gray-50 dark:bg-[#252525] rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Ticket className="w-10 h-10 text-gray-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('no_issues_yet')}</h3>
+                            <h3 className="text-xl font-bold text-gray-700 dark:text-white mb-2">{t('no_issues_yet')}</h3>
                             <p className="text-gray-500 mb-6">{t('no_issues_desc')}</p>
                         </div>
                     )}
@@ -131,13 +131,13 @@ const Dashboard = () => {
     return (
         <div className="py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-black text-gray-900 dark:text-white">{t('admin_hub')}</h1>
+                <h1 className="text-3xl font-black text-gray-700 dark:text-white">{t('admin_hub')}</h1>
                 <p className="text-gray-500 dark:text-gray-400">{t('admin_hub_desc')}</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl border border-gray-100 dark:border-[#333] shadow-sm flex items-center hover:-translate-y-1 transition-all">
-                    <div className="p-3 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 mr-4">
+                    <div className="p-3 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-700/30 dark:text-blue-400 mr-4">
                         <Ticket className="w-6 h-6" />
                     </div>
                     <div>

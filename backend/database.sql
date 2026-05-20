@@ -7,7 +7,7 @@ USE libero_db;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    avatar_key VARCHAR(64) NULL,
+    avatar VARCHAR(255) NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'USER',
     is_active BOOLEAN DEFAULT true,

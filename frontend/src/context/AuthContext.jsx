@@ -31,12 +31,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const updateAvatar = async (avatarKey) => {
+    const updateAvatar = async (avatarUrl) => {
         const res = await axios.put('http://localhost:5000/api/users/me/avatar', {
-            avatar_key: avatarKey
+            avatar: avatarUrl
         });
 
-        const next = { ...(user || {}), avatar_key: res.data.avatar_key };
+        const next = { ...(user || {}), avatar: res.data.avatar };
         setUser(next);
         localStorage.setItem('user', JSON.stringify(next));
         return next;

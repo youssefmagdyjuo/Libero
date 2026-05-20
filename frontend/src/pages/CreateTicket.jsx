@@ -103,7 +103,7 @@ const CreateTicket = () => {
     return (
         <div className="max-w-3xl mx-auto py-8 px-4">
             <div className="mb-6 text-center md:text-left">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('submit_ticket')}</h1>
+                <h1 className="text-2xl font-bold text-gray-700 dark:text-white">{t('submit_ticket')}</h1>
                 <p className="text-gray-500 text-sm">{t('ticket_form_hint')}</p>
             </div>
 

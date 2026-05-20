@@ -92,7 +92,7 @@ const EditTicket = () => {
         <div className="max-w-3xl mx-auto py-8">
             <div className="mb-6 flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Ticket</h1>
+                    <h1 className="text-2xl font-bold text-gray-700 dark:text-white">Edit Ticket</h1>
                     <p className="text-gray-500 text-sm">Update the details of this request.</p>
                 </div>
                 <button onClick={() => navigate('/tickets')} className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors">

@@ -14,14 +14,14 @@ export const login = async (req, res) => {
         if (!user.is_active) return res.status(403).json({ message: 'User is disabled' });
 
         const token = jwt.sign(
-            { id: user.id, role: user.role, username: user.username, avatar_key: user.avatar_key || null },
+            { id: user.id, role: user.role, username: user.username, avatar: user.avatar || null },
             process.env.JWT_SECRET || 'secret',
             { expiresIn: '1d' }
         );
 
         res.json({
             token,
-            user: { id: user.id, username: user.username, role: user.role, avatar_key: user.avatar_key || null }
+            user: { id: user.id, username: user.username, role: user.role, avatar: user.avatar || null }
         });
     } catch (err) {
         console.error(err);

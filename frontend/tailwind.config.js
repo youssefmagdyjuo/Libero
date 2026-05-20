@@ -15,10 +15,13 @@ export default {
           600: '#0d9488',
         },
         dark: {
-          bg: '#121212',
+          bg: '#1c1c1cff',
           surface: '#1e1e1e',
           border: '#333333',
         }
+      },
+      fontFamily: {
+        sans: ['Saira', 'sans-serif'],
       }
     },
   },

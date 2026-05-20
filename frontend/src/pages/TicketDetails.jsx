@@ -78,6 +78,7 @@ const TicketDetails = () => {
                         ticket_id: msg.ticket_id,
                         user_id: msg.user_id,
                         username: msg.username,
+                        avatar: msg.avatar,
                         content: msg.content,
                         created_at: msg.created_at
                     }
@@ -136,6 +137,7 @@ const TicketDetails = () => {
                             ticket_id: row.ticket_id,
                             user_id: row.user_id,
                             username: row.username,
+                            avatar: row.avatar,
                             content: row.content,
                             created_at: row.created_at
                         }
@@ -304,7 +306,7 @@ const TicketDetails = () => {
                                     {ticket.status}
                                 </span>
                             </div>
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                            <h1 className="text-2xl font-bold text-gray-700 dark:text-white mb-4">
                                 {ticket.title}
                             </h1>
                             <div className="prose dark:prose-invert max-w-none">
@@ -412,8 +414,17 @@ const TicketDetails = () => {
                                     return (
                                         <div
                                             key={`comment-${c.id}`}
-                                            className={`flex w-full ${isMine ? 'justify-start' : 'justify-end'}`}
+                                            className={`flex w-full gap-3 ${isMine ? 'justify-start' : 'justify-end'}`}
                                         >
+                                            {!isMine && c.avatar && (
+                                                <img src={c.avatar} alt="Avatar" className="w-8 h-8 rounded-full border border-gray-200 dark:border-[#333] shadow-sm bg-gray-50 flex-shrink-0" />
+                                            )}
+                                            {!isMine && !c.avatar && (
+                                                <div className="w-8 h-8 rounded-full bg-primary-600 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                                                    {String(c.username || '').slice(0,2).toUpperCase()}
+                                                </div>
+                                            )}
+                                            
                                             <div
                                                 className={`max-w-[min(85%,20rem)] px-3 py-2.5 rounded-2xl border shadow-sm ${
                                                     isMine
@@ -510,6 +521,15 @@ const TicketDetails = () => {
                                                     </p>
                                                 )}
                                             </div>
+
+                                            {isMine && c.avatar && (
+                                                <img src={c.avatar} alt="Avatar" className="w-8 h-8 rounded-full border border-gray-200 dark:border-[#333] shadow-sm bg-gray-50 flex-shrink-0" />
+                                            )}
+                                            {isMine && !c.avatar && (
+                                                <div className="w-8 h-8 rounded-full bg-primary-600 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                                                    {String(c.username || '').slice(0,2).toUpperCase()}
+                                                </div>
+                                            )}
                                         </div>
                                     );
                                 })

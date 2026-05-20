@@ -221,7 +221,7 @@ export const getTicketComments = async (req, res) => {
 
         try {
             const { rows: fromNew } = await query(
-                `SELECT tc.id, tc.ticket_id, tc.user_id, u.username, tc.content, tc.created_at
+                `SELECT tc.id, tc.ticket_id, tc.user_id, u.username, u.avatar, tc.content, tc.created_at
                  FROM ticket_comments tc
                  INNER JOIN users u ON u.id = tc.user_id
                  WHERE tc.ticket_id = ?
@@ -236,7 +236,7 @@ export const getTicketComments = async (req, res) => {
 
         try {
             const { rows: fromLegacy } = await query(
-                `SELECT c.id, c.ticket_id, c.user_id, u.username, c.content, c.created_at
+                `SELECT c.id, c.ticket_id, c.user_id, u.username, u.avatar, c.content, c.created_at
                  FROM comments c
                  INNER JOIN users u ON u.id = c.user_id
                  WHERE c.ticket_id = ?
@@ -561,11 +561,13 @@ export const addComment = async (req, res) => {
         }
 
         let username = req.user.username;
+        let avatar = req.user.avatar;
         if (!username) {
-            const { rows: urows } = await query('SELECT username FROM users WHERE id = ?', [
+            const { rows: urows } = await query('SELECT username, avatar FROM users WHERE id = ?', [
                 req.user.id
             ]);
             username = urows[0]?.username;
+            avatar = urows[0]?.avatar;
         }
 
         const payload = {
@@ -573,6 +575,7 @@ export const addComment = async (req, res) => {
             ticket_id: Number(id),
             user_id: req.user.id,
             username,
+            avatar,
             content: text,
             created_at: new Date().toISOString()
         };

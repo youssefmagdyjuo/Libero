@@ -82,8 +82,12 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }) => {
             <div className="p-4 border-t border-gray-200 dark:border-[#333] space-y-4">
                 {!isCollapsed && (
                     <div className="flex items-center gap-3 px-2">
-                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-[#252525] flex items-center justify-center text-gray-500 shrink-0">
-                            <UserIcon className="w-5 h-5" />
+                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-[#252525] flex items-center justify-center text-gray-500 shrink-0 overflow-hidden border border-gray-200 dark:border-[#333]">
+                            {user?.avatar ? (
+                                <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                            ) : (
+                                <UserIcon className="w-5 h-5" />
+                            )}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.username}</p>

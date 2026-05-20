@@ -36,25 +36,6 @@ const Navbar = ({ onMenuToggle, isMobileMenuOpen }) => {
 
     const isAdmin = user?.role === 'SUPER_ADMIN' || user?.role === 'IT_ADMIN';
 
-    const avatarBgByKey = (k) => {
-        switch (k) {
-            case 'owl_green':
-                return 'bg-emerald-500';
-            case 'owl_blue':
-                return 'bg-blue-500';
-            case 'owl_purple':
-                return 'bg-purple-500';
-            case 'fox_orange':
-                return 'bg-orange-500';
-            case 'cat_pink':
-                return 'bg-pink-500';
-            case 'robot_slate':
-                return 'bg-slate-600';
-            default:
-                return 'bg-primary-600';
-        }
-    };
-
     const initials = (name) => {
         const u = String(name || '').trim();
         if (!u) return 'U';
@@ -126,13 +107,13 @@ const Navbar = ({ onMenuToggle, isMobileMenuOpen }) => {
                         title={t('profile')}
                         className="mr-2 md:mr-3 inline-flex items-center justify-center"
                     >
-                        <div
-                            className={`h-9 w-9 rounded-full text-white font-black text-xs flex items-center justify-center shadow-sm ${avatarBgByKey(
-                                user?.avatar_key
-                            )}`}
-                        >
-                            {user?.username ? initials(user.username) : <UserCircle2 className="w-5 h-5" />}
-                        </div>
+                        {user?.avatar ? (
+                            <img src={user.avatar} alt={user.username} className="h-9 w-9 rounded-full shadow-sm object-cover bg-gray-50 border border-gray-200 dark:border-[#333]" />
+                        ) : (
+                            <div className="h-9 w-9 rounded-full text-white font-black text-xs flex items-center justify-center shadow-sm bg-primary-600">
+                                {user?.username ? initials(user.username) : <UserCircle2 className="w-5 h-5" />}
+                            </div>
+                        )}
                     </Link>
                     <Link to="/change-password" title="Change Password" className="hidden sm:block mr-2 md:mr-4 p-1.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-lg transition-all">
                         <KeyRound className="w-5 h-5" />
